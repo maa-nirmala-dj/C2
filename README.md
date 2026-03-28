@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050505">
+    
     <title>👑 MND HUB — Maa Nirmala DJ & Tent House | Full Screen Interface</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,16 +46,14 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* =========================================================================
-           STRICT FLEXBOX SHELL (GUARANTEES 100% CHROME FULL SCREEN)
-           ========================================================================= */
         body, html {
             width: 100vw; 
-            height: 100vh; /* Standard fallback */
-            height: 100dvh; /* Perfect dynamic fit for Chrome Mobile */
+            height: 100vh;
+            height: 100dvh; 
             background-color: var(--bg-base); color: var(--text-main);
             font-family: var(--font-body); 
-            overflow: hidden; /* Prevents the entire page from bouncing */
+            overflow: hidden; 
+            display: flex; justify-content: center; align-items: center;
             background-image: 
                 radial-gradient(circle at 10% 20%, var(--neon-pink-dim), transparent 30%),
                 radial-gradient(circle at 90% 80%, var(--neon-cyan-dim), transparent 30%),
@@ -67,22 +67,42 @@
             100% { filter: hue-rotate(360deg); }
         }
 
+        /* =========================================================================
+           UNBREAKABLE ABSOLUTE LAYOUT CONTAINER
+           ========================================================================= */
         #app-container {
             width: 100%; 
             height: 100%; 
-            display: flex; 
-            flex-direction: column; /* Stacks header, content, and footer perfectly */
-            position: relative;
+            max-width: 100vw;
+            position: relative; 
+            overflow: hidden; 
+            background: #000;
+        }
+
+        /* DESKTOP MODE OVERRIDE */
+        @media screen and (min-width: 768px) {
+            #app-container {
+                width: 400px;
+                height: 90vh;
+                max-height: 850px;
+                border-radius: 40px;
+                border: 8px solid #111;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 100px rgba(0, 229, 255, 0.15);
+            }
+            footer { border-bottom-left-radius: 32px; border-bottom-right-radius: 32px; }
+            header { border-top-left-radius: 32px; border-top-right-radius: 32px; }
+            .app-overlay, #lockdown-overlay, .settings-modal { border-radius: 32px; }
         }
 
         /* =========================================================================
-           SOLID BLOCKS: HEADER & FOOTER
+           SOLID BLOCKS: HEADER, SCROLL CONTENT, & FOOTER
            ========================================================================= */
+        
+        /* LOCKED TO THE TOP */
         header {
-            width: 100%;
+            position: absolute; top: 0; left: 0; right: 0;
             height: var(--header-height); 
-            flex-shrink: 0; /* Prevents header from shrinking */
-            background: rgba(0, 0, 0, 0.95); padding: 0 20px; 
+            background: rgba(5, 5, 5, 0.98); padding: 0 20px; 
             border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex; flex-direction: column; justify-content: center;
             backdrop-filter: blur(15px);
@@ -101,15 +121,14 @@
             box-shadow: 0 5px 20px rgba(0, 229, 255, 0.2);
         }
 
+        /* LOCKED TO THE BOTTOM */
         footer { 
-            width: 100%; 
+            position: absolute; bottom: 0; left: 0; right: 0;
             height: var(--footer-height); 
-            flex-shrink: 0; /* Prevents footer from shrinking */
             background: rgba(0, 0, 0, 0.98); 
             border-top: 2px solid rgba(255,255,255,0.1); 
             display: flex; justify-content: space-around; align-items: center; 
             z-index: 2500; backdrop-filter: blur(20px);
-            position: relative;
         }
         footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(to right, var(--neon-cyan), var(--neon-lime), var(--neon-pink)); box-shadow: 0 0 20px 2px var(--neon-lime); animation: bottomNavShine 3s infinite linear; }
         @keyframes bottomNavShine { 0% { box-shadow: 0 0 20px 2px var(--neon-lime); } 33% { box-shadow: 0 0 20px 2px var(--neon-cyan); } 66% { box-shadow: 0 0 20px 2px var(--neon-pink); } 100% { box-shadow: 0 0 20px 2px var(--neon-lime); } }
@@ -124,20 +143,20 @@
         .nav-item[data-nav="game"].active .nav-icon, .nav-item[data-nav="game"].active .nav-name { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
         .nav-item[data-nav="auth"].active .nav-icon, .nav-item[data-nav="auth"].active .nav-name { color: #fff; text-shadow: 0 0 15px #fff; }
 
-        /* =========================================================================
-           DYNAMIC SCROLL AREA (FILLS ALL REMAINING SPACE)
-           ========================================================================= */
+        /* SCROLL AREA LOCKED EXACTLY BETWEEN TOP AND BOTTOM */
         #main-scroll-content { 
-            flex: 1; /* Takes up 100% of the space between header and footer */
+            position: absolute;
+            top: var(--header-height);
+            bottom: var(--footer-height);
+            left: 0; right: 0;
             overflow-y: auto; overflow-x: hidden;
             padding: 20px; 
-            display: flex; flex-direction: column; align-items: center; /* Centers content on massive desktop screens */
+            display: flex; flex-direction: column; align-items: center; 
         }
         
-        /* Inner wrapper to keep content looking good on ultra-wide desktop monitors */
         .content-wrapper {
             width: 100%;
-            max-width: 800px; /* Expands nicely on desktop without stretching text across the whole room */
+            max-width: 800px;
         }
 
         #main-scroll-content::-webkit-scrollbar { width: 5px; }
