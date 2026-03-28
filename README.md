@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +13,7 @@
 
     <style>
         /* =========================================================================
-           ADVANCED RESET & CSS VARIABLES (Dynamic Color System)
+           ADVANCED RESET & CSS VARIABLES
            ========================================================================= */
         :root {
             --bg-base: #030303;
@@ -44,9 +43,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* =========================================================================
-           MOBILE-FIRST CORE LAYOUT MATRIX
-           ========================================================================= */
         body, html {
             width: 100%; height: 100%;
             background-color: var(--bg-base); color: var(--text-main);
@@ -66,41 +62,44 @@
             100% { filter: hue-rotate(360deg); }
         }
 
-        /* DEFAULT MOBILE VIEW: Full bleed, edge-to-edge, unconstrained */
+        /* =========================================================================
+           FLAWLESS MOBILE & DESKTOP CONTAINER LOGIC
+           ========================================================================= */
+        
+        /* Default: Perfect Full-Screen Native Mobile View */
         #app-container {
             width: 100%; 
-            height: 100%; 
-            max-width: 100%; /* Fixes the squishing bug */
+            height: 100dvh; 
+            max-width: 100vw; 
             background: #000;
-            position: relative; overflow: hidden; 
+            position: relative; 
+            overflow: hidden; 
             display: flex; flex-direction: column;
         }
 
-        /* DESKTOP / WIDE SCREEN OVERRIDE: Creates the floating simulator feel */
+        /* Desktop override: Floating Flagship Phone Simulator */
         @media screen and (min-width: 768px) {
             #app-container {
-                max-width: 480px; /* Locks width only on large screens */
-                height: 90vh; /* Creates spacing at top and bottom */
-                max-height: 900px; 
-                border: 1px solid rgba(255,255,255,0.08);
-                border-radius: 35px; /* Premium curved edges */
-                box-shadow: 0 0 60px rgba(0, 229, 255, 0.15), 0 0 120px rgba(255, 0, 255, 0.1);
+                width: 400px; /* Locked physical width */
+                height: 90vh; /* Floating height */
+                max-height: 850px; 
+                border-radius: 40px; /* Mobile hardware curves */
+                border: 8px solid #111; /* Simulated hardware bezel */
+                box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 100px rgba(0, 229, 255, 0.15);
             }
             
-            /* Ensure footer curves match container on desktop */
+            /* Ensures bottom corners don't poke through the bezel */
             footer {
-                border-bottom-left-radius: 35px;
-                border-bottom-right-radius: 35px;
+                border-bottom-left-radius: 32px;
+                border-bottom-right-radius: 32px;
             }
-            
-            /* Ensure overlays curves match container on desktop */
-            .app-overlay, #lockdown-overlay {
-                border-radius: 35px;
+            .app-overlay, #lockdown-overlay, .settings-modal {
+                border-radius: 32px;
             }
         }
 
         /* =========================================================================
-           UI COMPONENTS & INTERFACES
+           STRICT BOUNDARY LAYOUT (HEADER, SCROLL, FOOTER)
            ========================================================================= */
         header {
             background: rgba(0, 0, 0, 0.95); padding: 0 20px; 
@@ -109,10 +108,12 @@
             height: var(--header-height); z-index: 1000;
             display: flex; flex-direction: column; justify-content: center;
             backdrop-filter: blur(15px);
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
         }
         
         .header-top { display: flex; justify-content: space-between; align-items: center; }
-        .logo-block { font-family: var(--font-head); font-weight: 900; font-size: 22px; color: var(--neon-lime); text-shadow: 0 0 12px var(--neon-lime-dim); }
+        .logo-block { font-family: var(--font-head); font-weight: 900; font-size: 20px; color: var(--neon-lime); text-shadow: 0 0 12px var(--neon-lime-dim); }
         .control-icons { display: flex; gap: 20px; color: #fff; font-size: 22px; cursor: pointer;}
         .control-icons i:hover { color: var(--neon-lime); text-shadow: 0 0 10px var(--neon-lime);}
 
@@ -123,54 +124,65 @@
             box-shadow: 0 5px 20px rgba(0, 229, 255, 0.2);
         }
 
+        /* STRICT SCROLL AREA: Never overlaps header or footer */
         #main-scroll-content { 
-            position: absolute; top: var(--header-height); bottom: var(--footer-height); 
-            left: 0; right: 0; overflow-y: auto; padding: 20px; padding-bottom: 40px; z-index: 5; 
+            position: absolute; 
+            top: var(--header-height); 
+            bottom: var(--footer-height); 
+            left: 0; width: 100%; 
+            overflow-y: auto; overflow-x: hidden;
+            padding: 20px; z-index: 5; 
         }
-        #main-scroll-content::-webkit-scrollbar { width: 5px; }
+        #main-scroll-content::-webkit-scrollbar { width: 4px; }
         #main-scroll-content::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, var(--neon-pink), var(--neon-cyan)); border-radius: 10px; }
 
-        #perfect-intro { text-align: center; padding: 45px 0; border-radius: 20px; background: radial-gradient(circle at 50% 120%, var(--neon-lime-dim), transparent 60%); margin-bottom: 30px; position: relative; }
+        /* =========================================================================
+           DYNAMIC TYPOGRAPHY & COMPONENTS
+           ========================================================================= */
+        #perfect-intro { text-align: center; padding: 40px 10px; border-radius: 20px; background: radial-gradient(circle at 50% 120%, var(--neon-lime-dim), transparent 60%); margin-bottom: 30px; position: relative; }
         #perfect-intro::before { content: ''; position: absolute; bottom: 0; left: 10%; width: 80%; height: 2px; background: linear-gradient(to right, transparent, var(--neon-lime), transparent); box-shadow: 0 0 10px var(--neon-lime); }
         
-        .shimmering-title { font-family: var(--font-head); font-weight: 900; font-size: 30px; margin-bottom: 15px; background: linear-gradient(90deg, #fff 0%, #fff 45%, var(--neon-lime) 50%, #fff 55%, #fff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 2.5s infinite linear; text-transform: uppercase; letter-spacing: 2px; word-break: break-word; }
-        .shimmering-dj-title { font-family: var(--font-head); font-weight: 900; font-size: 22px; background: linear-gradient(90deg, #fff 0%, #fff 40%, var(--neon-pink) 50%, #fff 60%, #fff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer-dj 3s infinite linear; text-transform: uppercase; word-break: break-word; }
+        /* clamp() logic ensures text scales perfectly based on screen width */
+        .shimmering-title { font-family: var(--font-head); font-weight: 900; font-size: clamp(22px, 7vw, 28px); margin-bottom: 12px; background: linear-gradient(90deg, #fff 0%, #fff 45%, var(--neon-lime) 50%, #fff 55%, #fff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 2.5s infinite linear; text-transform: uppercase; letter-spacing: 1px; }
+        .shimmering-dj-title { font-family: var(--font-head); font-weight: 900; font-size: clamp(18px, 5.5vw, 22px); background: linear-gradient(90deg, #fff 0%, #fff 40%, var(--neon-pink) 50%, #fff 60%, #fff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer-dj 3s infinite linear; text-transform: uppercase; }
         
         @keyframes textShimmer { to { background-position: -200% center; } }
         @keyframes textShimmer-dj { to { background-position: 200% center; } }
-        .intro-body-text { color: var(--text-sub); font-size: 15px; line-height: 1.6; margin-top: 15px; padding: 0 15px; }
+        .intro-body-text { color: var(--text-sub); font-size: 14px; line-height: 1.6; margin-top: 15px; }
 
         .category-glow-panel { background: #000; border-radius: 20px; padding: 1px; margin-bottom: 25px; position: relative; transition: transform 0.3s ease; }
         .category-glow-panel:hover { transform: scale(1.02); }
         .category-glow-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; pointer-events: none; opacity: 0.9; box-shadow: inset 0 0 15px currentcolor, 0 0 15px currentcolor; }
-        .category-content-inner { background: var(--bg-panel); backdrop-filter: blur(8px); border-radius: 19px; padding: 25px; text-align: center; }
-        .category-title { font-family: var(--font-head); font-weight: 900; font-size: 22px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .category-body { color: var(--text-sub); font-size: 14px; margin-bottom: 20px; opacity: 0.9; }
+        .category-content-inner { background: var(--bg-panel); backdrop-filter: blur(8px); border-radius: 19px; padding: 25px 15px; text-align: center; }
+        .category-title { font-family: var(--font-head); font-weight: 900; font-size: clamp(18px, 5vw, 22px); margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .category-body { color: var(--text-sub); font-size: 13px; margin-bottom: 20px; opacity: 0.9; }
         
-        .glow-category-btn-list { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .glow-category-btn-list button { background: #000; border: 1px solid currentcolor; border-radius: 8px; padding: 10px 22px; font-family: var(--font-head); font-size: 12px; font-weight: bold; color: #fff; cursor: pointer; text-shadow: 0 0 5px currentcolor; display: flex; align-items: center; gap: 8px; transition: 0.3s ease; }
+        .glow-category-btn-list { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .glow-category-btn-list button { background: #000; border: 1px solid currentcolor; border-radius: 8px; padding: 10px 18px; font-family: var(--font-head); font-size: 12px; font-weight: bold; color: #fff; cursor: pointer; text-shadow: 0 0 5px currentcolor; display: flex; align-items: center; gap: 8px; transition: 0.3s ease; }
         .glow-category-btn-list button:hover { color: #000; background: currentcolor; text-shadow: none; box-shadow: 0 0 15px currentcolor;}
         
         .panel-pink { color: var(--neon-pink); }
         .panel-lime { color: var(--neon-lime); }
         .panel-cyan { color: var(--neon-cyan); }
 
-        /* OVERLAYS */
+        /* =========================================================================
+           FULLSCREEN OVERLAYS (MENUS, GAMES, SETTINGS)
+           ========================================================================= */
         .app-overlay { 
-            position: absolute; top: 0; left: 0; right: 0; bottom: var(--footer-height); 
+            position: absolute; top: var(--header-height); left: 0; width: 100%; bottom: var(--footer-height); 
             background: rgba(0,0,0,0.98); backdrop-filter: blur(20px); z-index: 500; 
-            display: flex; flex-direction: column; transform: translateY(120%); 
+            display: flex; flex-direction: column; transform: translateY(150%); 
             transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
         .app-overlay.active { transform: translateY(0); }
         .overlay-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(5,5,5,0.9); flex-shrink: 0;}
-        .overlay-header h2 { font-family: var(--font-head); font-size: 20px; font-weight: bold; margin: 0;}
+        .overlay-header h2 { font-family: var(--font-head); font-size: 18px; font-weight: bold; margin: 0;}
         .close-overlay-btn { color: #fff; opacity: 0.7; font-size: 26px; cursor: pointer; transition: 0.3s;}
         .close-overlay-btn:hover { color: var(--neon-pink); opacity: 1; transform: scale(1.1);}
-        .overlay-content-area { flex: 1; overflow-y: auto; padding: 20px; }
+        .overlay-content-area { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; }
 
         .settings-modal {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px);
             z-index: 2000; display: flex; flex-direction: column;
             transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -181,23 +193,23 @@
         
         .hw-btn {
             background: #111; border: 1px solid var(--neon-lime); border-radius: 12px;
-            padding: 30px 10px; text-align: center; color: #fff; font-family: var(--font-head);
-            font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s;
+            padding: 25px 5px; text-align: center; color: #fff; font-family: var(--font-head);
+            font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.3s;
             box-shadow: inset 0 0 10px var(--neon-lime-dim); display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .hw-btn i { font-size: 36px; color: var(--neon-lime); margin-bottom: 15px; transition: 0.3s;}
+        .hw-btn i { font-size: 32px; color: var(--neon-lime); margin-bottom: 12px; transition: 0.3s;}
         .hw-btn:hover { background: var(--neon-lime-dim); transform: scale(1.05); }
         .hw-btn:hover i { color: #fff; filter: drop-shadow(0 0 5px #fff); }
         
         #media-feed-container {
-            position: absolute; top: var(--header-height); bottom: var(--footer-height); left: 0; right: 0;
+            position: absolute; top: var(--header-height); bottom: var(--footer-height); left: 0; width: 100%;
             background: #000; border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--neon-cyan);
             display: none; flex-direction: column; z-index: 1500; overflow: hidden;
         }
         #media-video { width: 100%; height: 100%; object-fit: cover; }
         .close-media-btn {
             position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8);
-            color: var(--neon-pink); border: 1px solid var(--neon-pink); padding: 10px 20px;
+            color: var(--neon-pink); border: 1px solid var(--neon-pink); padding: 10px 15px;
             border-radius: 8px; cursor: pointer; font-family: var(--font-head); z-index: 1501; font-weight: bold; letter-spacing: 1px;
         }
 
@@ -207,26 +219,29 @@
             flex-direction: column; justify-content: center; align-items: center;
             color: white; font-family: var(--font-head); text-align: center;
         }
-        .lockdown-text { font-size: 40px; font-weight: 900; letter-spacing: 5px; animation: flash 1s infinite; }
+        .lockdown-text { font-size: 35px; font-weight: 900; letter-spacing: 4px; animation: flash 1s infinite; }
         @keyframes flash { 0%, 100% { opacity: 1; text-shadow: 0 0 30px red; } 50% { opacity: 0.5; } }
 
-        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; max-width: 320px; margin-left: auto; margin-right: auto; }
-        .cell { background: #111; border: 1px solid var(--neon-pink); height: 95px; display: flex; justify-content: center; align-items: center; font-size: 50px; font-family: var(--font-head); color: #fff; cursor: pointer; border-radius: 10px; box-shadow: inset 0 0 15px var(--neon-pink-dim); }
+        /* Optimized for perfect fit on smaller screens */
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; width: 100%; max-width: 280px; margin-left: auto; margin-right: auto; }
+        .cell { background: #111; border: 1px solid var(--neon-pink); height: 85px; display: flex; justify-content: center; align-items: center; font-size: 45px; font-family: var(--font-head); color: #fff; cursor: pointer; border-radius: 8px; box-shadow: inset 0 0 15px var(--neon-pink-dim); }
         .cell:hover { background: var(--neon-pink-dim); }
-        #game-status { text-align: center; margin-top: 25px; font-family: var(--font-body); color: var(--neon-pink); font-size: 20px; font-weight: bold; }
+        #game-status { text-align: center; margin-top: 25px; font-family: var(--font-body); color: var(--neon-pink); font-size: 18px; font-weight: bold; }
 
-        .drum-pad { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 25px; }
-        .pad { background: #111; border: 2px solid var(--neon-lime); height: 120px; border-radius: 15px; display: flex; justify-content: center; align-items: center; color: var(--neon-lime); font-family: var(--font-head); font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.1s; box-shadow: 0 0 10px var(--neon-lime-dim); }
+        .drum-pad { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+        .pad { background: #111; border: 2px solid var(--neon-lime); height: 100px; border-radius: 12px; display: flex; justify-content: center; align-items: center; color: var(--neon-lime); font-family: var(--font-head); font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.1s; box-shadow: 0 0 10px var(--neon-lime-dim); }
         .pad:active { transform: scale(0.9); background: var(--neon-lime); color: #000; box-shadow: 0 0 25px var(--neon-lime);}
 
-        .profile-card { background: #111; border: 1px solid var(--neon-cyan); padding: 20px; border-radius: 12px; margin-bottom: 25px; display: flex; align-items: center; gap: 20px; box-shadow: 0 0 15px var(--neon-cyan-dim); }
-        .profile-pic { width: 65px; height: 65px; border-radius: 50%; background: var(--neon-cyan); display: flex; justify-content: center; align-items: center; color: #000; font-size: 26px; font-weight: bold; font-family: var(--font-head); flex-shrink: 0;}
-        .profile-info h4 { color: #fff; font-size: 20px; margin-bottom: 5px; font-family: var(--font-head);}
-        .profile-info p { color: var(--text-sub); font-size: 14px; }
+        .profile-card { background: #111; border: 1px solid var(--neon-cyan); padding: 15px; border-radius: 12px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; box-shadow: 0 0 15px var(--neon-cyan-dim); }
+        .profile-pic { width: 55px; height: 55px; border-radius: 50%; background: var(--neon-cyan); display: flex; justify-content: center; align-items: center; color: #000; font-size: 22px; font-weight: bold; font-family: var(--font-head); flex-shrink: 0;}
+        .profile-info h4 { color: #fff; font-size: 18px; margin-bottom: 5px; font-family: var(--font-head);}
+        .profile-info p { color: var(--text-sub); font-size: 13px; }
 
-        /* ABSOLUTE FOOTER NAVIGATION */
+        /* =========================================================================
+           ABSOLUTE BOTTOM NAVIGATION (IMMOBILE)
+           ========================================================================= */
         footer { 
-            position: absolute; bottom: 0; left: 0; right: 0; width: 100%; 
+            position: absolute; bottom: 0; left: 0; width: 100%; 
             height: var(--footer-height); background: rgba(0, 0, 0, 0.98); 
             border-top: 2px solid rgba(255,255,255,0.1); 
             display: flex; justify-content: space-around; align-items: center; 
@@ -236,10 +251,10 @@
         @keyframes bottomNavShine { 0% { box-shadow: 0 0 20px 5px var(--neon-lime); } 33% { box-shadow: 0 0 20px 5px var(--neon-cyan); } 66% { box-shadow: 0 0 20px 5px var(--neon-pink); } 100% { box-shadow: 0 0 20px 5px var(--neon-lime); } }
         
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1; cursor: pointer; transition: all 0.2s ease; height: 100%;}
-        .nav-icon { font-size: 24px; color: #555; transition: 0.3s ease; margin-bottom: 6px; }
-        .nav-name { font-size: 12px; font-family: var(--font-body); color: #555; text-transform: uppercase; font-weight: 800; display: block; }
+        .nav-icon { font-size: 22px; color: #555; transition: 0.3s ease; margin-bottom: 6px; }
+        .nav-name { font-size: 11px; font-family: var(--font-body); color: #555; text-transform: uppercase; font-weight: 800; display: block; }
         
-        .nav-item:hover .nav-icon { color: #fff; transform: translateY(-4px); }
+        .nav-item:hover .nav-icon { color: #fff; transform: translateY(-3px); }
         
         .nav-item[data-nav="home"].active .nav-icon, .nav-item[data-nav="home"].active .nav-name { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); }
         .nav-item[data-nav="studio"].active .nav-icon, .nav-item[data-nav="studio"].active .nav-name { color: var(--neon-lime); text-shadow: 0 0 15px var(--neon-lime); }
@@ -260,7 +275,7 @@
                 </div>
             </div>
             <div id="nav-dropdown">
-                <div onclick="alert('Headquarters: Beltikri, Banka, Bihar.'); toggleMenu('nav-dropdown');" style="color:var(--neon-cyan); cursor:pointer; font-weight:bold; font-size:15px;">
+                <div onclick="alert('Headquarters: Beltikri, Banka, Bihar.'); toggleMenu('nav-dropdown');" style="color:var(--neon-cyan); cursor:pointer; font-weight:bold; font-size:14px;">
                     <i class="fas fa-map-marker-alt"></i> Location Info
                 </div>
             </div>
@@ -270,25 +285,25 @@
             <button class="close-media-btn" onclick="stopMedia()"><i class="fas fa-times"></i> CLOSE</button>
             <video id="media-video" autoplay playsinline></video>
             <div id="audio-visualizer" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; flex-direction:column;">
-                <i class="fas fa-microphone" style="font-size: 70px; color: var(--neon-lime); margin-bottom: 25px; animation: pulse 1s infinite;"></i>
-                <p style="color: var(--neon-lime); font-family: var(--font-head); font-weight: bold; font-size: 18px;">MIC ACTIVE & LISTENING...</p>
+                <i class="fas fa-microphone" style="font-size: 60px; color: var(--neon-lime); margin-bottom: 25px; animation: pulse 1s infinite;"></i>
+                <p style="color: var(--neon-lime); font-family: var(--font-head); font-weight: bold; font-size: 16px;">MIC ACTIVE & LISTENING...</p>
             </div>
             <div id="location-display" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; flex-direction:column; padding: 20px; text-align: center;">
-                <i class="fas fa-satellite" style="font-size: 70px; color: var(--neon-cyan); margin-bottom: 25px;"></i>
-                <p id="coords-text" style="color: var(--neon-cyan); font-family: var(--font-body); font-size: 18px; font-weight: bold; line-height: 1.5;"></p>
+                <i class="fas fa-satellite" style="font-size: 60px; color: var(--neon-cyan); margin-bottom: 25px;"></i>
+                <p id="coords-text" style="color: var(--neon-cyan); font-family: var(--font-body); font-size: 16px; font-weight: bold; line-height: 1.5;"></p>
             </div>
         </div>
 
         <div id="lockdown-overlay">
-            <i class="fas fa-shield-alt" style="font-size: 100px; margin-bottom: 25px;"></i>
+            <i class="fas fa-shield-alt" style="font-size: 80px; margin-bottom: 25px;"></i>
             <div class="lockdown-text">SYSTEM LOCKED</div>
-            <p style="margin-top: 25px; font-family: var(--font-body); font-size: 16px;">Refresh application to restore access.</p>
+            <p style="margin-top: 25px; font-family: var(--font-body); font-size: 14px;">Refresh application to restore access.</p>
         </div>
 
         <div id="settings-fullscreen" class="settings-modal">
             <div class="settings-header-bar">
-                <h2 style="color: var(--neon-lime); text-shadow: 0 0 10px var(--neon-lime); margin: 0; font-family: var(--font-head); font-size: 20px;"><i class="fas fa-sliders-h"></i> CONTROL CENTER</h2>
-                <i class="fas fa-times" style="font-size: 30px; color: #fff; cursor: pointer;" onclick="toggleSettings()"></i>
+                <h2 style="color: var(--neon-lime); text-shadow: 0 0 10px var(--neon-lime); margin: 0; font-family: var(--font-head); font-size: 18px;"><i class="fas fa-sliders-h"></i> CONTROL CENTER</h2>
+                <i class="fas fa-times" style="font-size: 26px; color: #fff; cursor: pointer;" onclick="toggleSettings()"></i>
             </div>
             <div class="settings-content-grid">
                 <div class="hw-btn" onclick="toggleFullScreen()">
@@ -360,7 +375,7 @@
                 <div class="close-overlay-btn" onclick="navTo('home', 'Home Menu')"><i class="fas fa-times-circle"></i></div>
             </div>
             <div class="overlay-content-area">
-                <p style="text-align:center; color: var(--text-sub); font-size: 14px;">Play Tic Tac Toe directly in the MND Hub.</p>
+                <p style="text-align:center; color: var(--text-sub); font-size: 13px;">Play Tic Tac Toe directly in the MND Hub.</p>
                 <div class="board" id="tictactoe-board">
                     <div class="cell" onclick="makeMove(this, 0)"></div>
                     <div class="cell" onclick="makeMove(this, 1)"></div>
@@ -373,8 +388,8 @@
                     <div class="cell" onclick="makeMove(this, 8)"></div>
                 </div>
                 <div id="game-status">Player X's Turn</div>
-                <div style="text-align:center; margin-top:35px;">
-                    <button onclick="resetGame()" style="background:#000; border:2px solid var(--neon-pink); color:var(--neon-pink); padding:15px 35px; border-radius:10px; font-family:var(--font-head); font-weight: bold; font-size: 16px; cursor:pointer;">RESTART SYSTEM</button>
+                <div style="text-align:center; margin-top:30px;">
+                    <button onclick="resetGame()" style="background:#000; border:2px solid var(--neon-pink); color:var(--neon-pink); padding:12px 30px; border-radius:10px; font-family:var(--font-head); font-weight: bold; font-size: 14px; cursor:pointer;">RESTART SYSTEM</button>
                 </div>
             </div>
         </div> 
@@ -385,7 +400,7 @@
                 <div class="close-overlay-btn" onclick="navTo('home', 'Home Menu')"><i class="fas fa-times-circle"></i></div>
             </div>
             <div class="overlay-content-area">
-                <p style="text-align:center; color: var(--text-sub); font-size: 14px;">Web Audio API Live Synthesizer. Tap to play.</p>
+                <p style="text-align:center; color: var(--text-sub); font-size: 13px;">Web Audio API Live Synthesizer. Tap to play.</p>
                 <div class="drum-pad">
                     <div class="pad" onclick="playSound(261.63)">C (Bass)</div>
                     <div class="pad" onclick="playSound(293.66)">D (Kick)</div>
@@ -403,21 +418,21 @@
                 <div class="close-overlay-btn" onclick="navTo('home', 'Home Menu')"><i class="fas fa-times-circle"></i></div>
             </div>
             <div class="overlay-content-area">
-                <h3 style="margin-bottom: 25px; font-family: var(--font-head); color:#fff; font-size: 20px;">Executive Board</h3>
+                <h3 style="margin-bottom: 20px; font-family: var(--font-head); color:#fff; font-size: 18px;">Executive Board</h3>
                 
                 <div class="profile-card">
                     <div class="profile-pic">L</div>
                     <div class="profile-info">
                         <h4>Lalu Kumar Tanti</h4>
                         <p>Founder & CEO, MND HUB</p>
-                        <p style="color: var(--neon-cyan); font-size: 12px; margin-top: 5px;">lalukumartanti75@gmail.com</p>
+                        <p style="color: var(--neon-cyan); font-size: 11px; margin-top: 5px;">lalukumartanti75@gmail.com</p>
                     </div>
                 </div>
 
-                <div style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
-                    <h3 style="margin-bottom: 20px; font-family: var(--font-head); color:#fff; font-size: 16px;">Creator Login Access</h3>
-                    <input type="password" placeholder="ENTER SECURE PIN" style="width:100%; padding:18px; background:#111; border:1px solid var(--neon-cyan); color:#fff; border-radius:10px; margin-bottom:20px; font-family:var(--font-body); font-size: 16px;">
-                    <button style="width:100%; background:var(--neon-cyan); color:#000; font-weight:900; padding:18px; border:none; border-radius:10px; font-family:var(--font-head); font-size: 16px; cursor:pointer; letter-spacing: 1px;">AUTHENTICATE</button>
+                <div style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
+                    <h3 style="margin-bottom: 15px; font-family: var(--font-head); color:#fff; font-size: 15px;">Creator Login Access</h3>
+                    <input type="password" placeholder="ENTER SECURE PIN" style="width:100%; padding:15px; background:#111; border:1px solid var(--neon-cyan); color:#fff; border-radius:10px; margin-bottom:15px; font-family:var(--font-body); font-size: 14px;">
+                    <button style="width:100%; background:var(--neon-cyan); color:#000; font-weight:900; padding:15px; border:none; border-radius:10px; font-family:var(--font-head); font-size: 14px; cursor:pointer; letter-spacing: 1px;">AUTHENTICATE</button>
                 </div>
             </div>
         </div>
@@ -443,14 +458,12 @@
     </div> 
 
     <script>
-        // GLOBAL VARIABLES
         let currentStream = null;
         let mediaRecorder = null;
         let recordedChunks = [];
         let wakeLock = null;
         let isMaxBrightness = false;
 
-        // UI Logic
         function toggleMenu(menuId) {
             const dropdown = document.getElementById(menuId);
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
@@ -462,7 +475,6 @@
             document.getElementById('nav-dropdown').style.display = 'none';
         }
 
-        // TEXT TO SPEECH (NAVIGATION ANNOUNCER)
         function speakActivation(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
@@ -475,7 +487,6 @@
             }
         }
 
-        // MASTER NAVIGATION CONTROLLER
         function navTo(page, spokenText = null) {
             if (spokenText) { speakActivation(spokenText); }
 
@@ -492,7 +503,6 @@
             }
         }
 
-        // FULLSCREEN API LOGIC
         function toggleFullScreen() {
             if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -513,7 +523,6 @@
             }
         }
 
-        // HARDWARE & WEB API LOGIC
         function resetMediaFeed() {
             document.getElementById('media-video').style.display = 'none';
             document.getElementById('audio-visualizer').style.display = 'none';
@@ -665,7 +674,6 @@
             document.body.style.pointerEvents = 'none';
         }
 
-        // STUDIO SYNTHESIZER
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
 
@@ -682,7 +690,6 @@
             oscillator.stop(audioCtx.currentTime + 1);
         }
 
-        // TIC TAC TOE GAME
         let boardState = ["", "", "", "", "", "", "", "", ""];
         let currentPlayer = "X";
         let gameActive = true;
