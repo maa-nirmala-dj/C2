@@ -46,20 +46,31 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* NATIVE SCROLL ALLOWED ON MOBILE FOR ADDRESS BAR HIDING */
         body, html {
             width: 100vw; 
-            height: 100vh;
-            height: 100dvh; 
+            min-height: 100vh; 
             background-color: var(--bg-base); color: var(--text-main);
             font-family: var(--font-body); 
-            overflow: hidden; 
-            display: flex; justify-content: center; align-items: center;
+            margin: 0; padding: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* FIX: We move the animation and background to a pseudo-element. 
+           If the body has an 'animation' or 'filter', it breaks "position: fixed" 
+           causing the header/footer to scroll away. This fixes it permanently! 
+        */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
             background-image: 
                 radial-gradient(circle at 10% 20%, var(--neon-pink-dim), transparent 30%),
                 radial-gradient(circle at 90% 80%, var(--neon-cyan-dim), transparent 30%),
                 radial-gradient(circle at 50% 50%, #000 0%, #030303 100%);
             animation: bodyHueShift var(--dynamic-shift) infinite linear;
-            transition: filter 0.3s ease;
+            pointer-events: none;
         }
 
         @keyframes bodyHueShift {
@@ -68,26 +79,43 @@
         }
 
         /* =========================================================================
-           UNBREAKABLE ABSOLUTE LAYOUT CONTAINER
+           UNBREAKABLE LAYOUT CONTAINER
            ========================================================================= */
         #app-container {
             width: 100%; 
-            height: 100%; 
+            min-height: 100vh; 
             max-width: 100vw;
-            position: relative; 
-            overflow: hidden; 
-            background: #000;
+            background: transparent;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* DESKTOP MODE OVERRIDE */
+        /* DESKTOP MODE OVERRIDE (Locks it back to a phone shape) */
         @media screen and (min-width: 768px) {
+            body, html {
+                height: 100vh; overflow: hidden;
+                display: flex; justify-content: center; align-items: center;
+            }
             #app-container {
                 width: 400px;
                 height: 90vh;
                 max-height: 850px;
+                min-height: auto;
                 border-radius: 40px;
                 border: 8px solid #111;
                 box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 100px rgba(0, 229, 255, 0.15);
+                position: relative;
+                overflow: hidden;
+            }
+            header, footer, .app-overlay, .settings-modal, #media-feed-container, #lockdown-overlay, #nav-dropdown {
+                position: absolute !important;
+            }
+            #main-scroll-content {
+                padding-top: calc(var(--header-height) + 20px) !important;
+                padding-bottom: calc(var(--footer-height) + 20px) !important;
+                overflow-y: auto !important;
+                height: 100%;
             }
             footer { border-bottom-left-radius: 32px; border-bottom-right-radius: 32px; }
             header { border-top-left-radius: 32px; border-top-right-radius: 32px; }
@@ -98,9 +126,9 @@
            SOLID BLOCKS: HEADER, SCROLL CONTENT, & FOOTER
            ========================================================================= */
         
-        /* LOCKED TO THE TOP */
+        /* LOCKED TO THE TOP VIEWPORT */
         header {
-            position: absolute; top: 0; left: 0; right: 0;
+            position: fixed; top: 0; left: 0; right: 0;
             height: var(--header-height); 
             background: rgba(5, 5, 5, 0.98); padding: 0 20px; 
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -115,15 +143,15 @@
         .control-icons i:hover { color: var(--neon-lime); text-shadow: 0 0 10px var(--neon-lime);}
 
         #nav-dropdown {
-            display: none; position: absolute; top: 70px; right: 20px; 
+            display: none; position: fixed; top: 70px; right: 20px; 
             background: var(--bg-panel); border: 1px solid var(--neon-cyan); 
             padding: 15px; border-radius: 12px; z-index: 2000; backdrop-filter: blur(10px);
             box-shadow: 0 5px 20px rgba(0, 229, 255, 0.2);
         }
 
-        /* LOCKED TO THE BOTTOM */
+        /* LOCKED TO THE BOTTOM VIEWPORT */
         footer { 
-            position: absolute; bottom: 0; left: 0; right: 0;
+            position: fixed; bottom: 0; left: 0; right: 0;
             height: var(--footer-height); 
             background: rgba(0, 0, 0, 0.98); 
             border-top: 2px solid rgba(255,255,255,0.1); 
@@ -143,24 +171,21 @@
         .nav-item[data-nav="game"].active .nav-icon, .nav-item[data-nav="game"].active .nav-name { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
         .nav-item[data-nav="auth"].active .nav-icon, .nav-item[data-nav="auth"].active .nav-name { color: #fff; text-shadow: 0 0 15px #fff; }
 
-        /* SCROLL AREA LOCKED EXACTLY BETWEEN TOP AND BOTTOM */
+        /* SCROLL AREA FORCES NATIVE BODY SCROLL TO HIDE CHROME BAR */
         #main-scroll-content { 
-            position: absolute;
-            top: var(--header-height);
-            bottom: var(--footer-height);
-            left: 0; right: 0;
-            overflow-y: auto; overflow-x: hidden;
-            padding: 20px; 
+            width: 100%;
+            padding-top: calc(var(--header-height) + 20px);
+            padding-bottom: calc(var(--footer-height) + 60px); /* Extra room to scroll fully */
+            padding-left: 20px;
+            padding-right: 20px;
             display: flex; flex-direction: column; align-items: center; 
+            flex: 1;
         }
         
         .content-wrapper {
             width: 100%;
             max-width: 800px;
         }
-
-        #main-scroll-content::-webkit-scrollbar { width: 5px; }
-        #main-scroll-content::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, var(--neon-pink), var(--neon-cyan)); border-radius: 10px; }
 
         /* =========================================================================
            TYPOGRAPHY & PANELS
@@ -191,10 +216,10 @@
         .panel-cyan { color: var(--neon-cyan); }
 
         /* =========================================================================
-           OVERLAYS (LOCKED EXACTLY BETWEEN HEADER AND FOOTER)
+           FIXED OVERLAYS (STAYS PINNED EVEN WHEN SCROLLING)
            ========================================================================= */
         .app-overlay { 
-            position: absolute; 
+            position: fixed; 
             top: var(--header-height); 
             bottom: var(--footer-height); 
             left: 0; width: 100%; 
@@ -211,7 +236,7 @@
 
         /* Full Screen Modals (Cover entire screen) */
         .settings-modal, #lockdown-overlay, #media-feed-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px);
             z-index: 9999; display: flex; flex-direction: column;
         }
@@ -496,6 +521,8 @@
                 const targetOverlay = document.getElementById(page + '-overlay');
                 if (targetOverlay) targetOverlay.classList.add('active');
             }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleFullScreen() {
