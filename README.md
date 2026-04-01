@@ -23,11 +23,11 @@
             --bg-panel: rgba(10, 10, 10, 0.85);
             
             --neon-pink: #FF00FF;
-            --neon-pink-dim: rgba(255, 0, 255, 0.2);
+            --neon-pink-dim: rgba(255, 0, 255, 0.25);
             --neon-lime: #00FA9A;
-            --neon-lime-dim: rgba(0, 250, 154, 0.2);
+            --neon-lime-dim: rgba(0, 250, 154, 0.25);
             --neon-cyan: #00E5FF;
-            --neon-cyan-dim: rgba(0, 229, 255, 0.2);
+            --neon-cyan-dim: rgba(0, 229, 255, 0.25);
             
             --text-main: #FFFFFF;
             --text-sub: #BBBBBB;
@@ -50,25 +50,23 @@
         body, html {
             width: 100vw; 
             min-height: 100vh; 
-            background-color: var(--bg-base); color: var(--text-main);
+            background-color: #000; /* Deepest black for base */
+            color: var(--text-main);
             font-family: var(--font-body); 
             margin: 0; padding: 0;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* FIX: We move the animation and background to a pseudo-element. 
-           If the body has an 'animation' or 'filter', it breaks "position: fixed" 
-           causing the header/footer to scroll away. This fixes it permanently! 
-        */
-        body::before {
-            content: '';
+        /* DYNAMIC MULTI-COLOR BACKGROUND - FULLY RESTORED */
+        #dynamic-bg {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1;
+            z-index: 0;
+            background-color: var(--bg-base);
             background-image: 
-                radial-gradient(circle at 10% 20%, var(--neon-pink-dim), transparent 30%),
-                radial-gradient(circle at 90% 80%, var(--neon-cyan-dim), transparent 30%),
-                radial-gradient(circle at 50% 50%, #000 0%, #030303 100%);
+                radial-gradient(circle at 15% 25%, var(--neon-pink-dim), transparent 45%),
+                radial-gradient(circle at 85% 75%, var(--neon-cyan-dim), transparent 45%),
+                radial-gradient(circle at 50% 50%, transparent 0%, #000 100%);
             animation: bodyHueShift var(--dynamic-shift) infinite linear;
             pointer-events: none;
         }
@@ -89,6 +87,8 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 1;
         }
 
         /* DESKTOP MODE OVERRIDE (Locks it back to a phone shape) */
@@ -130,7 +130,7 @@
         header {
             position: fixed; top: 0; left: 0; right: 0;
             height: var(--header-height); 
-            background: rgba(5, 5, 5, 0.98); padding: 0 20px; 
+            background: rgba(5, 5, 5, 0.90); padding: 0 20px; 
             border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex; flex-direction: column; justify-content: center;
             backdrop-filter: blur(15px);
@@ -153,7 +153,7 @@
         footer { 
             position: fixed; bottom: 0; left: 0; right: 0;
             height: var(--footer-height); 
-            background: rgba(0, 0, 0, 0.98); 
+            background: rgba(0, 0, 0, 0.90); 
             border-top: 2px solid rgba(255,255,255,0.1); 
             display: flex; justify-content: space-around; align-items: center; 
             z-index: 2500; backdrop-filter: blur(20px);
@@ -200,7 +200,7 @@
         @keyframes textShimmer-dj { to { background-position: 200% center; } }
         .intro-body-text { color: var(--text-sub); font-size: 15px; line-height: 1.6; margin-top: 15px; }
 
-        .category-glow-panel { background: #000; border-radius: 20px; padding: 1px; margin-bottom: 25px; position: relative; transition: transform 0.3s ease; width: 100%;}
+        .category-glow-panel { background: rgba(0,0,0,0.6); border-radius: 20px; padding: 1px; margin-bottom: 25px; position: relative; transition: transform 0.3s ease; width: 100%;}
         .category-glow-panel:hover { transform: scale(1.02); }
         .category-glow-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; pointer-events: none; opacity: 0.9; box-shadow: inset 0 0 15px currentcolor, 0 0 15px currentcolor; }
         .category-content-inner { background: var(--bg-panel); backdrop-filter: blur(8px); border-radius: 19px; padding: 25px 20px; text-align: center; }
@@ -282,6 +282,9 @@
     </style>
 </head>
 <body>
+
+    <div id="dynamic-bg"></div>
+
     <div id="app-container">
         
         <header>
