@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,7 +170,7 @@
         .nav-item[data-nav="home"].active .nav-icon, .nav-item[data-nav="home"].active .nav-name { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); }
         .nav-item[data-nav="studio"].active .nav-icon, .nav-item[data-nav="studio"].active .nav-name { color: var(--neon-lime); text-shadow: 0 0 15px var(--neon-lime); }
         .nav-item[data-nav="game"].active .nav-icon, .nav-item[data-nav="game"].active .nav-name { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
-        .nav-item[data-nav="auth"].active .nav-icon, .nav-item[data-nav="auth"].active .nav-name { color: var(--neon-gold); text-shadow: 0 0 15px var(--neon-gold); }
+        .nav-item[data-nav="auth"].active .nav-icon, .nav-item[data-nav="auth"].active .nav-name { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); }
 
         #main-scroll-content { 
             width: 100%;
@@ -250,7 +249,7 @@
         .back-btn { align-self: flex-start; background: rgba(255,255,255,0.05); border: 1px solid var(--text-sub); color: #fff; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 25px; font-family: var(--font-head); font-weight: bold; font-size: 13px; transition: 0.3s; display: flex; align-items: center; gap: 8px;}
         .back-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); transform: translateX(-5px); }
 
-        /* PORTAL ACCESS UI (MATCHES NEW SCREENSHOT PERFECTLY) */
+        /* PORTAL ACCESS UI */
         .portal-access-container {
             border: 1px solid var(--neon-gold);
             border-radius: 12px;
@@ -272,13 +271,13 @@
             display: flex; gap: 15px; overflow-x: auto; padding: 20px; 
             scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
         }
-        .portal-scroll-area::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean app look */
+        .portal-scroll-area::-webkit-scrollbar { display: none; } 
 
         .portal-btn {
             display: flex; align-items: center; justify-content: space-between; 
             background: #0a0a0a; border: 1px solid var(--neon-gold); 
             padding: 15px; border-radius: 12px; cursor: pointer; transition: 0.3s;
-            min-width: 260px; flex-shrink: 0; /* Ensures horizontal scrolling */
+            min-width: 260px; flex-shrink: 0; 
         }
         .portal-btn:hover { background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); transform: translateY(-2px);}
         .portal-btn-left { display: flex; align-items: center; gap: 15px; }
@@ -296,6 +295,9 @@
         /* ADMIN POST MANAGER */
         .admin-delete-btn { background: rgba(255,0,0,0.2); border: 1px solid red; color: #ff6666; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: var(--font-head); font-weight: bold; transition: 0.3s; width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;}
         .admin-delete-btn:hover { background: red; color: #fff; }
+
+        /* Admin Input Labels */
+        .admin-label { color: var(--neon-cyan); font-size: 12px; font-family: var(--font-head); display: block; margin-bottom: 5px; margin-top: 15px; }
 
         /* Full Screen Modals (Cover entire screen) */
         .settings-modal, #lockdown-overlay, #media-feed-container {
@@ -346,17 +348,139 @@
         
         <header>
             <div class="header-top">
-                <div class="logo-block">👑 MND HUB</div>
+                <div class="logo-block">👑 MND CREATORS</div>
                 <div class="control-icons">
                     <i class="fas fa-cog" onclick="toggleSettings()"></i> 
-                    <i class="fas fa-ellipsis-v" onclick="toggleMenu('nav-dropdown')"></i> 
+                    <i class="fas fa-bars" onclick="toggleMenu('side-nav-menu')"></i> 
                 </div>
             </div>
-            <div id="nav-dropdown">
-                <div onclick="alert('Headquarters: Beltikri, Banka, Bihar.'); toggleMenu('nav-dropdown');" style="color:var(--neon-cyan); cursor:pointer; font-weight:bold; font-size:15px;">
-                    <i class="fas fa-map-marker-alt"></i> Location Info
+        </header>
+
+        <div id="side-nav-menu" class="side-menu-overlay" onclick="closeSideMenu(event)">
+            <div class="side-menu-content" onclick="event.stopPropagation()">
+                <div class="side-menu-header">
+                    <h3 style="color: var(--neon-cyan); font-family: var(--font-head); font-size: 18px; margin: 0;">Menu</h3>
+                    <i class="fas fa-times" style="color: #fff; font-size: 24px; cursor: pointer;" onclick="toggleMenu('side-nav-menu')"></i>
+                </div>
+                
+                <div class="side-menu-items">
+                    <div class="side-menu-item" onclick="navTo('home'); toggleMenu('side-nav-menu')">
+                        <i class="fas fa-home"></i> Home
+                    </div>
+                    
+                    <div class="side-menu-item" onclick="alert('Sound Settings: Active'); toggleMenu('side-nav-menu')">
+                        <i class="fas fa-volume-up"></i> Sound
+                    </div>
+                    
+                    <div class="side-menu-item" onclick="alert('Notifications: Enabled'); toggleMenu('side-nav-menu')">
+                        <i class="fas fa-bell"></i> Notifications
+                    </div>
+                    
+                    <div class="side-menu-item" onclick="alert('Headquarters: Beltikri, Banka, Bihar.'); toggleMenu('side-nav-menu')">
+                        <i class="fas fa-map-marker-alt"></i> Location Info
+                    </div>
+                    
+                    <a href="https://maa-nirmala-dj.github.io/-tent-house./" style="text-decoration: none;">
+                        <div class="side-menu-item">
+                            <i class="fas fa-external-link-alt"></i> External Portal
+                        </div>
+                    </a>
                 </div>
             </div>
+        </div>
+
+        <style>
+            /* SIDE MENU STYLES */
+            .side-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 3000;
+                backdrop-filter: blur(5px);
+            }
+            
+            .side-menu-content {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 66.66%; /* One-third of the screen on the right */
+                max-width: 300px;
+                height: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                border-left: 1px solid var(--neon-cyan);
+                box-shadow: -5px 0 20px rgba(0, 229, 255, 0.2);
+                display: flex;
+                flex-direction: column;
+                transform: translateX(100%);
+                animation: slideInRight 0.3s forwards;
+            }
+
+            @keyframes slideInRight {
+                to { transform: translateX(0); }
+            }
+
+            .side-menu-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .side-menu-items {
+                display: flex;
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            .side-menu-item {
+                padding: 15px 20px;
+                color: #fff;
+                font-family: var(--font-body);
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                cursor: pointer;
+                transition: 0.3s;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .side-menu-item:hover {
+                background: rgba(0, 229, 255, 0.1);
+                color: var(--neon-cyan);
+            }
+
+            .side-menu-item i {
+                color: var(--neon-cyan);
+                width: 20px;
+                text-align: center;
+            }
+        </style>
+
+        <script>
+            // Update your toggleMenu function to handle the new side menu
+            function toggleMenu(menuId) {
+                const menu = document.getElementById(menuId);
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                } else {
+                    menu.style.display = 'block';
+                }
+            }
+
+            // Close side menu when clicking outside of it
+            function closeSideMenu(event) {
+                if (event.target.id === 'side-nav-menu') {
+                    document.getElementById('side-nav-menu').style.display = 'none';
+                }
+            }
+        </script>
         </header>
 
         <div id="media-feed-container">
@@ -625,13 +749,13 @@
             
             <div class="overlay-content-area" style="display: flex; justify-content: center; align-items: start; padding: 20px 10px;">
                 
-                <div id="auth-main-menu" class="portal-access-container">
-                    <div class="portal-top-title">
-                        PORTAL<br>ACCESS<br>SELECTION
+                <div id="auth-main-menu" class="portal-access-container" style="flex-direction: column; width: 100%; max-width: 400px; padding: 20px;">
+                    <div class="portal-top-title" style="border-right: none; padding: 0 0 20px 0; margin-bottom: 20px; text-align: center; max-width: 100%;">
+                        PORTAL ACCESS SELECTION
                     </div>
 
-                    <div class="portal-scroll-area">
-                        <div class="portal-btn" onclick="alert('Public User Login: Under Development')">
+                    <div class="portal-scroll-area" style="display: flex; flex-direction: column; overflow-x: hidden; padding: 0;">
+                        <div class="portal-btn" style="width: 100%; min-width: auto;" onclick="alert('Public User Login: Under Development')">
                             <div class="portal-btn-left">
                                 <div class="portal-icon-auth"><i class="fas fa-users"></i></div>
                                 <div class="portal-text-auth">
@@ -642,7 +766,7 @@
                             <div class="portal-arrow"><i class="fas fa-chevron-right"></i></div>
                         </div>
 
-                        <div class="portal-btn" onclick="showAdminLogin()">
+                        <div class="portal-btn" style="width: 100%; min-width: auto;" onclick="showAdminLogin()">
                             <div class="portal-btn-left">
                                 <div class="portal-icon-auth"><i class="fas fa-user-shield"></i></div>
                                 <div class="portal-text-auth">
@@ -653,8 +777,8 @@
                             <div class="portal-arrow"><i class="fas fa-chevron-right"></i></div>
                         </div>
 
-                        <a href="https://maa-nirmala-dj.github.io/-tent-house./" style="text-decoration: none;">
-                            <div class="portal-btn">
+                        <a href="https://maa-nirmala-dj.github.io/-tent-house./" style="text-decoration: none; width: 100%;">
+                            <div class="portal-btn" style="width: 100%; min-width: auto;">
                                 <div class="portal-btn-left">
                                     <div class="portal-icon-auth"><i class="fas fa-exchange-alt"></i></div>
                                     <div class="portal-text-auth">
@@ -670,13 +794,13 @@
 
                 <div id="admin-login-box" style="display:none; width: 100%; max-width: 400px; padding: 20px;">
                     <button class="back-btn" onclick="backToAuthMenu()"><i class="fas fa-arrow-left"></i> BACK TO MENU</button>
-                    <h3 style="color:var(--neon-gold); font-family:var(--font-head); margin-bottom:15px; font-size: 22px;">Admin Login</h3>
+                    <h3 style="color:var(--neon-cyan); font-family:var(--font-head); margin-bottom:15px; font-size: 22px;">Admin Login</h3>
                     <p style="color:#888; font-size:13px; margin-bottom:20px;">Enter restricted credentials to access live publishing tools.</p>
                     
-                    <input type="tel" id="admin-phone" placeholder="ENTER REGISTERED PHONE" style="width:100%; padding:15px; background:#111; border:1px solid var(--neon-gold); color:#fff; border-radius:8px; margin-bottom:15px; font-family:var(--font-body); font-size: 16px;">
-                    <input type="password" id="admin-pin" placeholder="ENTER SECURE PIN" style="width:100%; padding:15px; background:#111; border:1px solid var(--neon-gold); color:#fff; border-radius:8px; margin-bottom:25px; font-family:var(--font-body); font-size: 16px;">
+                    <input type="tel" id="admin-phone" placeholder="ENTER REGISTERED PHONE" style="width:100%; padding:15px; background:#111; border:1px solid var(--neon-cyan); color:#fff; border-radius:8px; margin-bottom:15px; font-family:var(--font-body); font-size: 16px;">
+                    <input type="password" id="admin-pin" placeholder="ENTER SECURE PIN" style="width:100%; padding:15px; background:#111; border:1px solid var(--neon-cyan); color:#fff; border-radius:8px; margin-bottom:25px; font-family:var(--font-body); font-size: 16px;">
                     
-                    <button onclick="verifyAdmin()" style="width:100%; background:var(--neon-gold); color:#000; font-weight:bold; padding:15px; border:none; border-radius:8px; font-family:var(--font-head); font-size:16px; cursor:pointer;">AUTHENTICATE</button>
+                    <button onclick="verifyAdmin()" style="width:100%; background:var(--neon-cyan); color:#000; font-weight:bold; padding:15px; border:none; border-radius:8px; font-family:var(--font-head); font-size:16px; cursor:pointer;">AUTHENTICATE</button>
                 </div>
 
                 <div id="admin-dashboard" style="display:none; width: 100%; max-width: 400px; padding: 10px 0;">
@@ -688,8 +812,19 @@
                     <div style="background: #111; border: 1px solid var(--neon-cyan); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
                         <h4 style="color:#fff; font-family:var(--font-head); margin-bottom:15px; font-size: 14px;"><i class="fas fa-upload"></i> Publish to Live Feed</h4>
                         
-                        <textarea id="post-text" placeholder="Write update details here..." style="width:100%; padding:15px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; margin-bottom:15px; height:100px; resize:none; font-family:var(--font-body);"></textarea>
+                        <label class="admin-label">Text Content</label>
+                        <textarea id="post-text" placeholder="Write update details here..." style="width:100%; padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; margin-bottom:10px; height:80px; resize:none; font-family:var(--font-body);"></textarea>
                         
+                        <label class="admin-label">Image URL</label>
+                        <input type="url" id="post-img-url" placeholder="https://... (Image Link)" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; margin-bottom:10px; font-family:var(--font-body); font-size: 14px;">
+
+                        <label class="admin-label">Video URL</label>
+                        <input type="url" id="post-video-url" placeholder="https://... (Video Link)" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; margin-bottom:10px; font-family:var(--font-body); font-size: 14px;">
+
+                        <label class="admin-label">Audio URL</label>
+                        <input type="url" id="post-audio-url" placeholder="https://... (Audio Link)" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; margin-bottom:10px; font-family:var(--font-body); font-size: 14px;">
+
+                        <label class="admin-label">Or Device File Upload (Image/Video/Audio/Doc)</label>
                         <input type="file" id="post-file" accept="image/*,audio/*,video/*,.pdf,.doc,.docx" style="margin-bottom:20px; color:#888; width:100%; font-size: 12px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;">
                         
                         <button id="publish-btn" onclick="createPost()" style="width:100%; background:var(--neon-cyan); color:#000; font-weight:900; padding:15px; border:none; border-radius:8px; cursor:pointer; font-family:var(--font-head); letter-spacing: 1px;">PUBLISH NOW</button>
@@ -702,6 +837,9 @@
                         </div>
                     </div>
                 </div>
+
+            </div>
+        </div>
 
             </div>
         </div>
@@ -874,11 +1012,14 @@
 
         async function createPost() {
             const text = document.getElementById('post-text').value;
+            const imgUrlInput = document.getElementById('post-img-url').value;
+            const vidUrlInput = document.getElementById('post-video-url').value;
+            const audUrlInput = document.getElementById('post-audio-url').value;
             const fileInput = document.getElementById('post-file');
             const publishBtn = document.getElementById('publish-btn');
             
-            if(!text && (!fileInput.files || !fileInput.files[0])) {
-                return alert("Please enter text or select a file to publish.");
+            if(!text && !imgUrlInput && !vidUrlInput && !audUrlInput && (!fileInput.files || !fileInput.files[0])) {
+                return alert("Please enter text, provide a URL, or select a file to publish.");
             }
 
             publishBtn.innerText = "UPLOADING...";
@@ -890,7 +1031,7 @@
             const dateStr = new Date().toLocaleString();
             
             try {
-                // Upload file (Image, Video, Audio, Document)
+                // Upload local device file if exists
                 if(fileInput.files && fileInput.files[0]) {
                     const file = fileInput.files[0];
                     fileType = file.type;
@@ -904,12 +1045,20 @@
                     text: text,
                     fileUrl: fileUrl,
                     fileType: fileType,
+                    imgUrl: imgUrlInput || null,
+                    vidUrl: vidUrlInput || null,
+                    audUrl: audUrlInput || null,
                     date: dateStr,
                     timestamp: timestamp
                 });
 
+                // Clear all inputs
                 document.getElementById('post-text').value = '';
+                document.getElementById('post-img-url').value = '';
+                document.getElementById('post-video-url').value = '';
+                document.getElementById('post-audio-url').value = '';
                 fileInput.value = '';
+                
                 alert("Update Published to Live Feed!");
             } catch(e) {
                 alert("Upload failed: " + e.message);
@@ -945,19 +1094,26 @@
                 postEl.className = 'live-post';
                 
                 let htmlContent = `<div class="live-post-date"><i class="fas fa-clock"></i> ${post.date || 'Just now'}</div>`;
+                
+                // 1. Text
                 if(post.text) htmlContent += `<div class="live-post-text">${post.text}</div>`;
                 
-                // Advanced File Type Rendering
-                if (post.fileUrl || post.img) {
-                    const url = post.fileUrl || post.img;
-                    const type = post.fileType || (post.img ? 'image/' : '');
+                // 2. Explicit URL Inputs
+                if(post.imgUrl) htmlContent += `<img src="${post.imgUrl}" alt="Live Image" style="width: 100%; border-radius: 8px; margin-bottom: 10px; max-height: 300px; object-fit: cover;">`;
+                if(post.vidUrl) htmlContent += `<video src="${post.vidUrl}" controls style="width: 100%; max-height: 300px; border-radius: 8px; margin-bottom: 10px; background: #000;"></video>`;
+                if(post.audUrl) htmlContent += `<audio src="${post.audUrl}" controls style="width: 100%; margin-bottom: 10px;"></audio>`;
+                
+                // 3. Uploaded Device Files
+                if (post.fileUrl) {
+                    const url = post.fileUrl;
+                    const type = post.fileType || '';
                     
                     if (type.startsWith('video/')) {
                         htmlContent += `<video src="${url}" controls style="width: 100%; max-height: 300px; border-radius: 8px; margin-bottom: 10px; background: #000;"></video>`;
                     } else if (type.startsWith('audio/')) {
                         htmlContent += `<audio src="${url}" controls style="width: 100%; margin-bottom: 10px;"></audio>`;
                     } else if (type.startsWith('image/')) {
-                        htmlContent += `<img src="${url}" alt="Live Update Image" style="width: 100%; border-radius: 8px; margin-bottom: 10px; max-height: 300px; object-fit: cover;">`;
+                        htmlContent += `<img src="${url}" alt="Uploaded Image" style="width: 100%; border-radius: 8px; margin-bottom: 10px; max-height: 300px; object-fit: cover;">`;
                     } else {
                         htmlContent += `<a href="${url}" target="_blank" style="color: var(--neon-cyan); display: block; margin-bottom: 10px; font-size: 14px; text-decoration: underline;"><i class="fas fa-file-download"></i> Download Attached File</a>`;
                     }
@@ -986,8 +1142,12 @@
                 postEl.style.border = '1px solid #333';
                 
                 let content = `<p style="color: #ccc; font-size: 11px; margin-bottom: 8px;"><i class="fas fa-clock"></i> ${post.date || 'Unknown Date'}</p>`;
+                
                 if(post.text) content += `<p style="color: #fff; font-size: 14px; margin-bottom: 8px;">${post.text.substring(0, 40)}${post.text.length > 40 ? '...' : ''}</p>`;
-                if(post.fileUrl || post.img) content += `<p style="color: var(--neon-cyan); font-size: 11px; margin-bottom: 8px;"><i class="fas fa-paperclip"></i> Media Attached</p>`;
+                
+                if(post.imgUrl || post.vidUrl || post.audUrl || post.fileUrl) {
+                    content += `<p style="color: var(--neon-cyan); font-size: 11px; margin-bottom: 8px;"><i class="fas fa-paperclip"></i> Media/URL Attached</p>`;
+                }
                 
                 // Secure Delete mapped to actual Firebase Node ID
                 content += `<button class="admin-delete-btn" onclick="deletePost('${post.id}')"><i class="fas fa-trash"></i> DELETE POST</button>`;
