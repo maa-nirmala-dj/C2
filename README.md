@@ -354,8 +354,6 @@
                     <i class="fas fa-bars" onclick="toggleMenu('side-nav-menu')"></i> 
                 </div>
             </div>
-        </header>
-
         <div id="side-nav-menu" class="side-menu-overlay" onclick="closeSideMenu(event)">
             <div class="side-menu-content" onclick="event.stopPropagation()">
                 <div class="side-menu-header">
